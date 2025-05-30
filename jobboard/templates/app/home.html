@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Jobs</title>
+</head>
+<body>
+    {% for job in Jobs %}
+            <li>
+                <strong>{{ job.job_title }}</strong><br>
+                {{ job.company_name }} - {{ job.job_description}}<br>
+
+                <!-- Edit Button for this Job -->
+                <a href="{% url 'update_job' pk=job.pk %}">
+                    <button>Edit</button>
+                </a>
+            </li>
+            <hr>
+        {% empty %}
+            <li>No jobs available.</li>
+        {% endfor %}
+    
+    
+</body>
+</html>
