@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Job</title>
-</head>
-<body>
+{% extends "app/base.html" %}
+
+{% block title %}Delete Job{% endblock %}
+
+{% block content %}
     <h1>
         Delete Jobs
     </h1>
@@ -20,5 +17,5 @@
     <a href="{% url 'home' %}">
         <button type="button">No</button>
     </a>
-</body>
+{% endblock content %}
 </html>
