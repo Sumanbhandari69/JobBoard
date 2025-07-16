@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from jobs.models import JobInformation
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -15,13 +18,13 @@ class JobsListView(ListView):
     model = JobInformation
     context_object_name = "Jobs"
 
-class JobCreateView(CreateView):
+class JobCreateView(LoginRequiredMixin,CreateView):
     template_name = "app/job_create.html"
     model = JobInformation
     fields = ["job_title", "company_name", "location", "job_description"]
     success_url = reverse_lazy("home")
 
-class JobUpdateView(UpdateView):
+class JobUpdateView(LoginRequiredMixin,UpdateView):
     template_name = "app/job_update.html"
     model = JobInformation
     fields = ["job_title", "company_name", "location", "job_description"]
@@ -33,10 +36,22 @@ class JobUpdateView(UpdateView):
     #     return get_object_or_404(JobInformation, pk=self.kwargs.get('pk'))
 
 
-class JobDeleteView(DeleteView):
+class JobDeleteView(LoginRequiredMixin,DeleteView):
     template_name ="app/job_delete.html"
     model = JobInformation
     success_url = reverse_lazy('home')
     context_object_name = "Job"
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Account created! Please log in.")
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
     
 
