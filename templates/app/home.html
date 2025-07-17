@@ -1,25 +1,22 @@
-{% extends "app/base.html" %}
+{% extends "app/base.html" %} {% block title %}View Jobs{% endblock title %} 
+{%block content %}
 
-    {% block title %}View Jobs{% endblock %}
-
-    {% block content %}
-
-        {% for job in Jobs %}
-        <li>
-        <strong>{{ job.job_title }}</strong><br />
-        {{ job.company_name }} - {{ job.job_description}}<br />
-
-        <!-- Edit Button for this Job -->
-        <a href="{% url 'update_job' pk=job.pk %}">
-            <button>Edit</button>
+<h2>Available Jobs</h2>
+{% if Jobs %}
+<ul>
+  {% for job in Jobs %}
+  <li>
+    <strong>{{ job.job_title }}</strong> at {{ job.company_name }} - {{ job.location }}
+    <p>{{ job.job_description }}</p>
+    {% comment %} <small>Posted by: {{ job.posted_by.username }}</small> {% endcomment %}
+    <!-- Edit Button for this Job -->
+        <a href="#">
+            <button>Apply</button>
         </a>
-        </li>
-        <hr />
-        {% empty %}
-        <li>No jobs available.</li>
-        {% endfor %}
-
-    {% endblock content %}
-
-    
-</html>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No jobs available right now.</p>
+{% endif %} 
+{% endblock content %}

@@ -25,16 +25,17 @@
           aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
+
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ms-auto">
             <a class="nav-link " href="{% url 'create_job' %}">Post Jobs</a>
-            <a class="nav-link " href="#">Your Jobs</a>
+            <a class="nav-link " href="{% url 'user_job' %}">Your Jobs</a>
             <a class="nav-link " href="#">Your Activity</a>
             <a class="nav-link " href="#">Portfolio</a>
 
             {% if user.is_authenticated %}
-            {% comment %} <span class="nav-link text-white">Hello, {{ user.username }}</span> {% endcomment %}
+            <span class="nav-link text-white">Hello, {{ user.username }}</span>
             <form
               method="post"
               action="{% url 'logout' %}"

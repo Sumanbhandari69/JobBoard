@@ -18,11 +18,24 @@ class JobsListView(ListView):
     model = JobInformation
     context_object_name = "Jobs"
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            # Exclude jobs posted by the current user
+            return JobInformation.objects.exclude(posted_by=user)
+        else:
+            # For anonymous users, show all jobs
+            return JobInformation.objects.all()
+
 class JobCreateView(LoginRequiredMixin,CreateView):
     template_name = "app/job_create.html"
     model = JobInformation
     fields = ["job_title", "company_name", "location", "job_description"]
     success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        form.instance.posted_by = self.request.user  # Set current user here
+        return super().form_valid(form)
 
 class JobUpdateView(LoginRequiredMixin,UpdateView):
     template_name = "app/job_update.html"
@@ -41,6 +54,15 @@ class JobDeleteView(LoginRequiredMixin,DeleteView):
     model = JobInformation
     success_url = reverse_lazy('home')
     context_object_name = "Job"
+
+
+class UserJobsListView(LoginRequiredMixin, ListView):
+    template_name = "app/user_job_list.html"
+    model = JobInformation
+    context_object_name = "Jobs"
+
+    def get_queryset(self):
+        return JobInformation.objects.filter(posted_by=self.request.user)
 
 
 def signup(request):

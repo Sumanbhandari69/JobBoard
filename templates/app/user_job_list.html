@@ -1,0 +1,21 @@
+{% extends "app/base.html" %}
+
+{% block content%}
+
+<h2>Your Jobs</h2>
+{% if Jobs %}
+  <ul>
+    {% for job in Jobs %}
+      <li>
+        <strong>{{ job.job_title }}</strong> at {{ job.company_name }} - {{ job.location }}
+        <p>{{ job.job_description }}</p>
+        <a href="{% url 'update_job' job.pk %}">Edit</a> |
+        <a href="{% url 'delete_job' job.pk %}">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>You haven't posted any jobs yet.</p>
+{% endif %}
+
+{%endblock content %}
