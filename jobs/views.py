@@ -7,6 +7,8 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from jobs.models import UserProfile
+from jobs.forms import UserProfileForm
 
 # Create your views here.
 
@@ -63,6 +65,20 @@ class UserJobsListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return JobInformation.objects.filter(posted_by=self.request.user)
+    
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = UserProfile
+    form_class = UserProfileForm
+    template_name = 'app/profile_form.html'  # Create this template
+
+    def get_object(self, queryset=None):
+        # Return the existing profile or create a new one for the user
+        profile, created = UserProfile.objects.get_or_create(user=self.request.user)
+        return profile
+
+    def get_success_url(self):
+        return self.request.path
 
 
 def signup(request):

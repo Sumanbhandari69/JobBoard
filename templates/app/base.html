@@ -32,7 +32,7 @@
             <a class="nav-link " href="{% url 'create_job' %}">Post Jobs</a>
             <a class="nav-link " href="{% url 'user_job' %}">Your Jobs</a>
             <a class="nav-link " href="#">Your Activity</a>
-            <a class="nav-link " href="#">Portfolio</a>
+            <a class="nav-link " href="{% url 'profile' %}">Profile</a>
 
             {% if user.is_authenticated %}
             <span class="nav-link text-white">Hello, {{ user.username }}</span>
