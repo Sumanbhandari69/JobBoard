@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserProfile  # Or your model name
+from jobs.models import UserProfile  # Or your model name
 
 class UserProfileForm(forms.ModelForm):
     class Meta:

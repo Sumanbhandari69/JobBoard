@@ -9,6 +9,8 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from jobs.models import UserProfile
 from jobs.forms import UserProfileForm
+from django.views import View
+
 
 # Create your views here.
 
@@ -66,20 +68,58 @@ class UserJobsListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return JobInformation.objects.filter(posted_by=self.request.user)
     
+class ProfileView(LoginRequiredMixin, View):
+    login_url = 'login'
 
-class ProfileUpdateView(LoginRequiredMixin, UpdateView):
-    model = UserProfile
-    form_class = UserProfileForm
-    template_name = 'app/profile_form.html'  # Create this template
+    def get(self, request):
+        user = request.user
+        response = render(request, "app/profile_public.html")
+        # Check if profile exists
+        profile = UserProfile.objects.filter(user=user).first()
 
-    def get_object(self, queryset=None):
-        # Return the existing profile or create a new one for the user
-        profile, created = UserProfile.objects.get_or_create(user=self.request.user)
-        return profile
+        if not profile:
+            # If no profile, show form to create one
+            form = UserProfileForm()
+            return render(request, 'app/profile_form.html', {
+                'form': form,
+                'edit_mode': True
+            })
 
-    def get_success_url(self):
-        return self.request.path
+        # If profile exists and user clicked 'Edit'
+        if request.GET.get('edit') == '1':
+            form = UserProfileForm(instance=profile)
+            return render(request, 'app/profile_form.html', {
+                'form': form,
+                'edit_mode': True
+            })
+        
+        data= {
+            'profile': profile,
+            'edit_mode': False
+        }
+        print(data)
+        # Else show public profile
+        return render(request, 'app/profile_public.html',data)
 
+    def post(self, request):
+        user = request.user
+        profile = UserProfile.objects.filter(user=user).first()
+
+        if profile:
+            form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        else:
+            form = UserProfileForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = user
+            profile.save()
+            return redirect('profile')
+
+        return render(request, 'app/profile_form.html', {
+            'form': form,
+            'edit_mode': True
+        })
 
 def signup(request):
     if request.method == 'POST':

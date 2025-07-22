@@ -1,0 +1,27 @@
+{% extends "app/base.html" %} 
+{% block title %}Public Profile{% endblock title%} 
+{%block content %}
+<h2>{{ profile.full_name }}</h2>
+<p><strong>Gender:</strong> {{ profile.get_gender_display }}</p>
+<p><strong>Bio:</strong> {{ profile.bio }}</p>
+<p><strong>Phone:</strong> {{ profile.phone }}</p>
+<p><strong>Location:</strong> {{ profile.location }}</p>
+<p><strong>Education:</strong> {{ profile.education }}</p>
+<p><strong>Experience:</strong> {{ profile.experience }}</p>
+<p><strong>Skills:</strong> {{ profile.skills }}</p>
+<p><strong>Contact Email:</strong> {{ profile.contact_email }}</p>
+<p>
+  <strong>LinkedIn:</strong>
+  <a href="{{ profile.linkedin_url }}" target="_blank"
+    >{{ profile.linkedin_url }}</a
+  >
+</p>
+<p>
+  <strong>GitHub:</strong>
+  <a href="{{ profile.github_url }}" target="_blank"
+    >{{ profile.github_url }}</a
+  >
+</p>
+
+<a href="{% url 'profile' %}?edit=1">Edit Profile</a>
+{% endblock content %}

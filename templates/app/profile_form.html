@@ -1,12 +1,13 @@
 {% extends "app/base.html" %}
 
-{% block content %}
-  <h2>Your Portfolio</h2>
+{% block title %}Your Profile{% endblock %}
 
+
+{% block content %}
+  <h2>{% if form.instance.pk %}Edit Profile{% else %}Create Profile{% endif %}</h2>
   <form method="POST" novalidate>
     {% csrf_token %}
     {{ form.as_p }}
-
-    <button type="submit">Save</button>
+    <button type="submit" class="button primary">Save</button>
   </form>
-{% endblock content %}
+{% endblock %}

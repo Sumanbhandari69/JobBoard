@@ -25,13 +25,14 @@ SECRET_KEY = 'django-insecure-g^^q(3o4*$n*62+pvdz%0^^xn2g1a-x0p(6ghic73pp8v$ak#b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.90','localhost','127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'jobs.apps.JobsConfig',
+    "debug_toolbar",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +46,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -79,6 +81,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "192.168.1.90"
+]
 
 
 # Password validation
